@@ -1,9 +1,0 @@
-# Robots.txt for deveolpersohail.online
-User-agent: *
-Allow: /
-
-# Sitemap
-Sitemap: https://deveolpersohail.online/sitemap.xml
-
-# Host
-Host: https://deveolpersohail.online

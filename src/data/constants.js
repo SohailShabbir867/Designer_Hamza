@@ -16,4 +16,4 @@ export const SITE_DATA = {
 };
 
 // Backend API base URL
-export const API_BASE = "http://localhost:5000/api";
+export const API_BASE = "/api";

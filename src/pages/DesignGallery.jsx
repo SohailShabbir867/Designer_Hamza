@@ -92,7 +92,7 @@ const DesignGallery = () => {
         />
       </div>
 
-      <div className="container relative max-w-6xl px-5 mx-auto sm:px-6 lg:px-8">
+      <div className="container relative px-5 mx-auto max-w-7xl sm:px-6 lg:px-8">
         {/* Header */}
         <FadeUp>
           <div className="mb-14 text-center sm:mb-16">

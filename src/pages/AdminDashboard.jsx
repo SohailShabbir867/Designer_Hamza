@@ -355,7 +355,7 @@ const AdminDashboard = () => {
               >
                 <div className="relative h-44 overflow-hidden sm:h-48">
                   <img
-                    src={`${API_BASE.replace('/api', '')}${design.image}`}
+                    src={design.image.startsWith("http") ? design.image : `${API_BASE.replace('/api', '')}${design.image}`}
                     alt={design.title}
                     className="object-cover w-full h-full"
                   />

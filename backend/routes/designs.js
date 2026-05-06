@@ -1,35 +1,31 @@
 import { Router } from "express";
 import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import path from "path";
-import fs from "fs";
 import Design from "../models/Design.js";
 
 const router = Router();
 
-// ── Multer config — store uploaded images in /uploads ──
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    const dir = path.join(process.cwd(), "uploads");
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    cb(null, dir);
-  },
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
+// ── Cloudinary config ──
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// ── Multer config with Cloudinary ──
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "designer_hamza",
+    allowed_formats: ["jpg", "png", "jpeg", "webp", "gif", "svg", "avif"],
   },
 });
 
 const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB max
-  fileFilter: (_req, file, cb) => {
-    const allowedExts = /jpeg|jpg|png|webp|gif|bmp|svg|tiff|avif/;
-    const allowedMimes = /^image\//;
-    const ext = allowedExts.test(path.extname(file.originalname).toLowerCase());
-    const mime = allowedMimes.test(file.mimetype);
-    if (ext || mime) return cb(null, true);
-    cb(new Error("Only image files are allowed (jpg, png, webp, gif, svg, etc.)"));
-  },
 });
 
 // Helper to handle multer errors gracefully
@@ -82,7 +78,7 @@ router.post("/", requireAdmin, handleUpload, async (req, res) => {
     const design = await Design.create({
       title,
       description,
-      image: `/uploads/${req.file.filename}`,
+      image: req.file.path, // Cloudinary secure URL
       viewUrl: viewUrl || "",
       technologies: technologies
         ? JSON.parse(technologies)
@@ -102,9 +98,16 @@ router.delete("/:id", requireAdmin, async (req, res) => {
     const design = await Design.findById(req.params.id);
     if (!design) return res.status(404).json({ error: "Design not found" });
 
-    // Remove the image file
-    const imgPath = path.join(process.cwd(), design.image);
-    if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+    // Remove the image from Cloudinary
+    if (design.image && design.image.includes("cloudinary.com")) {
+      // Extract public ID from URL: e.g., https://res.cloudinary.com/.../designer_hamza/filename.jpg
+      const parts = design.image.split("/");
+      const filename = parts.pop().split(".")[0];
+      const folder = parts.pop();
+      const publicId = `${folder}/${filename}`;
+      
+      await cloudinary.uploader.destroy(publicId);
+    }
 
     await Design.findByIdAndDelete(req.params.id);
     res.json({ message: "Design deleted" });

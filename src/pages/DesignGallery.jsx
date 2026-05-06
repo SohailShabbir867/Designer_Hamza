@@ -181,7 +181,7 @@ const DesignGallery = () => {
                   onClick={() => setSelectedDesign(design)}
                 >
                   <img
-                    src={`${API_BASE.replace('/api', '')}${design.image}`}
+                    src={design.image.startsWith("http") ? design.image : `${API_BASE.replace('/api', '')}${design.image}`}
                     alt={design.title}
                     loading="lazy"
                     className="object-contain w-full h-full transition-all duration-700 group-hover:scale-105"
@@ -294,7 +294,7 @@ const DesignGallery = () => {
 
               <div className="max-h-[50vh] sm:max-h-[60vh] overflow-hidden">
                 <img
-                  src={`${API_BASE.replace('/api', '')}${selectedDesign.image}`}
+                  src={selectedDesign.image.startsWith("http") ? selectedDesign.image : `${API_BASE.replace('/api', '')}${selectedDesign.image}`}
                   alt={selectedDesign.title}
                   className="object-contain w-full h-full"
                 />

@@ -16,4 +16,4 @@ export const SITE_DATA = {
 };
 
 // Backend API base URL
-export const API_BASE = "/api";
+export const API_BASE = "https://designer-hamza-api.onrender.com/api";

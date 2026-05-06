@@ -24,9 +24,13 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/api/designs", designRoutes);
 app.use("/api/contact", contactRoutes);
 
-// ── Health check ──
+// ── Health check & Root ──
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.get("/", (_req, res) => {
+  res.send("Designer Hamza API is running perfectly! 🚀");
 });
 
 // ── Start ──

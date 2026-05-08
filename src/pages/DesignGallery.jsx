@@ -69,12 +69,149 @@ const DesignGallery = () => {
     return (
       <section id="gallery" className="relative w-full py-20 lg:py-28 bg-dark-50">
         <div className="absolute top-0 left-0 right-0 section-divider" />
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 rounded-full border-accent border-t-transparent animate-spin" />
+
+        {/* Ambient glow */}
+        <motion.div
+          className="absolute w-[500px] h-[500px] bg-accent/[0.04] rounded-full blur-[140px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.04, 0.08, 0.04] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        <div className="container relative max-w-7xl px-5 mx-auto sm:px-6 lg:px-8">
+
+          {/* Header skeleton */}
+          <div className="mb-14 text-center sm:mb-16">
+            <motion.div
+              className="h-10 w-56 mx-auto mb-4 rounded-xl bg-dark-200"
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="h-4 w-72 mx-auto rounded-lg bg-dark-200"
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+            />
+            <div className="w-20 h-1 mx-auto mt-4 rounded-full bg-gradient-to-r from-accent to-accent-light opacity-40" />
+          </div>
+
+          {/* Animated centre message */}
+          <div className="flex flex-col items-center justify-center mb-14">
+
+            {/* Spinning ring with inner icon */}
+            <div className="relative mb-6">
+              <motion.div
+                className="w-20 h-20 rounded-full border-2 border-accent/20 border-t-accent"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+              />
+              <motion.div
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ scale: [0.85, 1.05, 0.85], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Sparkles className="w-7 h-7 text-accent" />
+              </motion.div>
+            </div>
+
+            {/* Animated text */}
+            <motion.h3
+              className="text-xl font-bold text-white font-display mb-2"
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Loading Designs
+            </motion.h3>
+
+            {/* Dot dot dot animation */}
+            <div className="flex items-center gap-1 mb-4">
+              {[0, 1, 2].map((i) => (
+                <motion.span
+                  key={i}
+                  className="w-1.5 h-1.5 rounded-full bg-accent"
+                  animate={{ y: [0, -6, 0], opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.2, ease: "easeInOut" }}
+                />
+              ))}
+            </div>
+
+            <motion.p
+              className="text-xs text-gray-500 sm:text-sm"
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            >
+              Fetching creative work from the server...
+            </motion.p>
+
+            {/* Shimmer progress bar */}
+            <div className="w-48 h-1 mt-5 rounded-full bg-dark-200 overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-gradient-to-r from-transparent via-accent to-transparent"
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+                style={{ width: "60%" }}
+              />
+            </div>
+          </div>
+
+          {/* Skeleton cards */}
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 lg:gap-8">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="rounded-2xl bg-dark-100 border border-dark-200 overflow-hidden"
+              >
+                {/* Image skeleton */}
+                <motion.div
+                  className="h-60 sm:h-72 bg-dark-200 relative overflow-hidden"
+                  animate={{ opacity: [0.5, 0.8, 0.5] }}
+                  transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
+                    animate={{ x: ["-100%", "200%"] }}
+                    transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.1, ease: "easeInOut" }}
+                  />
+                </motion.div>
+
+                {/* Text skeleton */}
+                <div className="p-4 sm:p-5 space-y-3">
+                  <motion.div
+                    className="h-5 w-3/4 rounded-lg bg-dark-200"
+                    animate={{ opacity: [0.4, 0.7, 0.4] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.1 + i * 0.1 }}
+                  />
+                  <motion.div
+                    className="h-3 w-full rounded-md bg-dark-200"
+                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 + i * 0.1 }}
+                  />
+                  <motion.div
+                    className="h-3 w-2/3 rounded-md bg-dark-200"
+                    animate={{ opacity: [0.3, 0.6, 0.3] }}
+                    transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 + i * 0.1 }}
+                  />
+                  <div className="flex gap-2 pt-1">
+                    {[1, 2].map((t) => (
+                      <motion.div
+                        key={t}
+                        className="h-5 w-16 rounded-md bg-dark-200"
+                        animate={{ opacity: [0.3, 0.6, 0.3] }}
+                        transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 + t * 0.1 }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
     );
   }
+
 
   return (
     <section id="gallery" className="relative w-full py-20 lg:py-28 bg-dark-50">

@@ -1,0 +1,11 @@
+# Designer Hamza Portfolio — robots.txt
+# https://designerhamza.site
+
+User-agent: *
+Allow: /
+
+# Block admin dashboard from indexing
+Disallow: /hamza-design
+
+# Sitemap location
+Sitemap: https://designerhamza.site/sitemap.xml

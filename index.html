@@ -58,25 +58,76 @@
 
     <!-- ── Structured Data (JSON-LD) ── -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Designer Hamza",
-        "jobTitle": "Creative Graphic Designer",
-        "description": "Professional Graphic Designer specializing in Adobe Photoshop, Adobe Illustrator, Canva & modern creative tools.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bahawalpur",
-          "addressCountry": "PK"
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://designerhamza.site/#person",
+          "name": "Designer Hamza",
+          "alternateName": "Hamza",
+          "jobTitle": "Creative Graphic Designer",
+          "description": "Professional Graphic Designer with 4+ years of experience specializing in Adobe Photoshop, Adobe Illustrator, Canva, brand identity, ebook design, social media content, and visual design.",
+          "url": "https://designerhamza.site",
+          "image": "https://designerhamza.site/apple-touch-icon.png",
+          "email": "hr59281@gmail.com",
+          "telephone": "+92-303-9219730",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bahawalpur",
+            "addressRegion": "Punjab",
+            "addressCountry": "PK"
+          },
+          "sameAs": [
+            "https://www.instagram.com/designerhamza",
+            "https://www.facebook.com/designerhamza",
+            "https://www.linkedin.com/in/designerhamza"
+          ],
+          "knowsAbout": [
+            "Graphic Design",
+            "Adobe Photoshop",
+            "Adobe Illustrator",
+            "Canva",
+            "Adobe InDesign",
+            "Figma",
+            "Brand Identity",
+            "Social Media Content",
+            "Ebook Design",
+            "Lead Magnet Design",
+            "Workbook Design",
+            "Visual Design",
+            "UI Design"
+          ]
         },
-        "email": "hr59281@gmail.com",
-        "telephone": "+92-303-9219730",
-        "knowsAbout": [
-          "Graphic Design", "Adobe Photoshop", "Adobe Illustrator", "Canva",
-          "Adobe InDesign", "Figma", "Brand Identity", "Social Media Content",
-          "Ebook Design", "Visual Design"
-        ]
-      }
+        {
+          "@type": "WebSite",
+          "@id": "https://designerhamza.site/#website",
+          "url": "https://designerhamza.site",
+          "name": "Designer Hamza Portfolio",
+          "description": "Official portfolio of Designer Hamza – Creative Graphic Designer from Bahawalpur, Pakistan.",
+          "publisher": { "@id": "https://designerhamza.site/#person" },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://designerhamza.site/#webpage",
+          "url": "https://designerhamza.site",
+          "name": "Designer Hamza | Creative Graphic Designer – Branding, Social Media & Visual Design",
+          "description": "Portfolio of Designer Hamza – Professional Graphic Designer specializing in Adobe Photoshop, Illustrator, Canva & modern creative tools.",
+          "isPartOf": { "@id": "https://designerhamza.site/#website" },
+          "about": { "@id": "https://designerhamza.site/#person" },
+          "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designerhamza.site/" },
+              { "@type": "ListItem", "position": 2, "name": "Gallery", "item": "https://designerhamza.site/#gallery" },
+              { "@type": "ListItem", "position": 3, "name": "About", "item": "https://designerhamza.site/#about" },
+              { "@type": "ListItem", "position": 4, "name": "Contact", "item": "https://designerhamza.site/#contact" }
+            ]
+          }
+        }
+      ]
+    }
     </script>
 
     <!-- ── Fonts — Outfit for headings, Inter for body ── -->

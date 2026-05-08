@@ -44,7 +44,7 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
   }, [isMenuOpen, setIsMenuOpen]);
 
   // Don't show navbar on admin page
-  if (location.pathname === "/post-design-mydesignposthere") return null;
+  if (location.pathname === "/hamza-design") return null;
 
   return (
     <motion.nav

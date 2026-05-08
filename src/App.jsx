@@ -49,7 +49,7 @@ function App() {
       <Routes>
         <Route path="/" element={<PortfolioPage />} />
         <Route
-          path="/post-design-mydesignposthere"
+          path="/hamza-design"
           element={
             <Suspense fallback={<SectionFallback />}>
               <AdminDashboard />

@@ -1,18 +1,11 @@
 import { Router } from "express";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const router = Router();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Create reusable transporter
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
-};
+const DESIGNER_EMAIL = process.env.DESIGNER_EMAIL || "hr59281@gmail.com";
+const FROM_EMAIL = "Designer Hamza <onboarding@resend.dev>"; // Use your verified domain later
 
 // ── POST /api/contact — Send contact message + auto-reply ──
 router.post("/", async (req, res) => {
@@ -23,14 +16,11 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const transporter = createTransporter();
-    const designerEmail = process.env.GMAIL_USER;
-
-    // 1. Send notification to designer
-    await transporter.sendMail({
-      from: `"Portfolio Contact" <${designerEmail}>`,
-      to: designerEmail,
-      replyTo: email,
+    // 1. Notify the designer
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: DESIGNER_EMAIL,
+      reply_to: email,
       subject: `🎨 New Message from ${name} — Portfolio Contact`,
       html: `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0A0A0A; border-radius: 16px; overflow: hidden; border: 1px solid #222;">
@@ -51,15 +41,15 @@ router.post("/", async (req, res) => {
               <p style="margin: 0; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">${message}</p>
             </div>
             <hr style="border: none; border-top: 1px solid #222; margin: 20px 0;">
-            <p style="color: #666; font-size: 12px; text-align: center;">Sent from Designer Hamza Portfolio</p>
+            <p style="color: #666; font-size: 12px; text-align: center;">Sent from Designer Hamza Portfolio — designerhamza.site</p>
           </div>
         </div>
       `,
     });
 
-    // 2. Send auto-reply to the visitor
-    await transporter.sendMail({
-      from: `"Designer Hamza" <${designerEmail}>`,
+    // 2. Auto-reply to the visitor
+    await resend.emails.send({
+      from: FROM_EMAIL,
       to: email,
       subject: `Thanks for reaching out, ${name}! 🎨`,
       html: `
@@ -76,7 +66,7 @@ router.post("/", async (req, res) => {
               I'm always excited to discuss new design projects and creative ideas. In the meantime, feel free to check out my latest work on my portfolio.
             </p>
             <div style="text-align: center; margin: 25px 0;">
-              <a href="https://designerhamza.com" style="display: inline-block; padding: 12px 30px; background: #FF6600; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;">View My Portfolio</a>
+              <a href="https://designerhamza.site" style="display: inline-block; padding: 12px 30px; background: #FF6600; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;">View My Portfolio</a>
             </div>
             <p style="font-size: 14px; color: #bbb;">
               Best regards,<br>

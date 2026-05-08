@@ -13,7 +13,28 @@ const PORT = process.env.PORT || 5000;
 await connectDB();
 
 // ── Middleware ──
-app.use(cors());
+const allowedOrigins = [
+  "https://designerhamza.site",
+  "https://www.designerhamza.site",
+  "https://designer-hamza.vercel.app",
+  /^https:\/\/designer-hamza.*\.vercel\.app$/, // preview deployments
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (Postman, mobile, server-to-server)
+    if (!origin) return callback(null, true);
+    const allowed = allowedOrigins.some((o) =>
+      typeof o === "string" ? o === origin : o.test(origin)
+    );
+    if (allowed) return callback(null, true);
+    callback(new Error(`CORS blocked: ${origin}`));
+  },
+  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "x-admin-password"],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

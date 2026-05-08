@@ -1,16 +1,10 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { Send, Loader2, Mail, MapPin, Phone } from "lucide-react";
 import { FadeUp } from "../animations/MotionWrappers";
-import { SOCIAL_LINKS, SITE_DATA } from "../data/constants";
-
-// ── EmailJS config ──
-const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+import { SOCIAL_LINKS, SITE_DATA, API_BASE } from "../data/constants";
 
 const smoothEase = [0.25, 0.46, 0.45, 0.94];
 
@@ -46,21 +40,26 @@ const Contact = () => {
     setNotification(null);
     setFormErrors({});
 
+    const name    = form.current.name.value.trim();
+    const email   = form.current.email.value.trim();
+    const message = form.current.message.value.trim();
+
     try {
-      await emailjs.sendForm(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        form.current,
-        EMAILJS_PUBLIC_KEY
-      );
-      setNotification({ type: "success", message: "Message sent successfully! ✅" });
-      form.current.reset();
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      setNotification({
-        type: "error",
-        message: "Failed to send. Please try again later.",
+      const res  = await fetch(`${API_BASE}/contact`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ name, email, message }),
       });
+      const data = await res.json();
+      if (res.ok) {
+        setNotification({ type: "success", message: "Message sent successfully! ✅" });
+        form.current.reset();
+      } else {
+        setNotification({ type: "error", message: data.error || "Failed to send message." });
+      }
+    } catch (error) {
+      console.error("Contact error:", error);
+      setNotification({ type: "error", message: "Failed to send. Please try again later." });
     } finally {
       setIsLoading(false);
     }

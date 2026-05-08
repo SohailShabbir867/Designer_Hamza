@@ -20,9 +20,10 @@ const DesignGallery = () => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [heartAnimating, setHeartAnimating] = useState(null);
 
+  // Only show categories that actually have designs uploaded
   const categories = [
-    "All", "Branding", "Social Media", "Ebook", "Workbook",
-    "Company Profile", "Lead Magnet", "Planner", "Flyer", "Poster", "Brochure", "Other",
+    "All",
+    ...Array.from(new Set(designs.map((d) => d.category).filter(Boolean))).sort(),
   ];
 
   useEffect(() => {
@@ -243,8 +244,8 @@ const DesignGallery = () => {
           </div>
         </FadeUp>
 
-        {/* Category Filters */}
-        {designs.length > 0 && (
+        {/* Category Filters — only renders categories that exist in uploaded designs */}
+        {designs.length > 0 && categories.length > 1 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

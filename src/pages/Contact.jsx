@@ -1,10 +1,16 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
+import emailjs from "@emailjs/browser";
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { Send, Loader2, Mail, MapPin, Phone } from "lucide-react";
 import { FadeUp } from "../animations/MotionWrappers";
-import { SOCIAL_LINKS, SITE_DATA, API_BASE } from "../data/constants";
+import { SOCIAL_LINKS, SITE_DATA } from "../data/constants";
+
+// ── EmailJS config ──
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const smoothEase = [0.25, 0.46, 0.45, 0.94];
 
@@ -14,24 +20,23 @@ const Contact = () => {
   const [notification, setNotification] = useState(null);
   const [formErrors, setFormErrors] = useState({});
 
-  const validateForm = (formData) => {
+  const validateForm = () => {
     const errors = {};
-    const name = formData.get("name")?.trim();
-    const email = formData.get("email")?.trim();
-    const message = formData.get("message")?.trim();
-    if (!name) errors.name = "Name is required";
+    const name    = form.current.name.value.trim();
+    const email   = form.current.email.value.trim();
+    const message = form.current.message.value.trim();
+    if (!name)             errors.name    = "Name is required";
     else if (name.length < 2) errors.name = "Name must be at least 2 characters";
-    if (!email) errors.email = "Email is required";
+    if (!email)            errors.email   = "Email is required";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Please enter a valid email";
-    if (!message) errors.message = "Message is required";
+    if (!message)          errors.message = "Message is required";
     else if (message.length < 10) errors.message = "Message must be at least 10 characters";
     return errors;
   };
 
   const sendForm = async (e) => {
     e.preventDefault();
-    const formData = new FormData(form.current);
-    const errors = validateForm(formData);
+    const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       document.getElementById(Object.keys(errors)[0])?.focus();
@@ -41,25 +46,17 @@ const Contact = () => {
     setNotification(null);
     setFormErrors({});
 
-    const name = formData.get("name").trim();
-    const email = formData.get("email").trim();
-    const message = formData.get("message").trim();
-
     try {
-      const res = await fetch(`${API_BASE}/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setNotification({ type: "success", message: "Message sent successfully! ✅" });
-        form.current.reset();
-      } else {
-        setNotification({ type: "error", message: data.error || "Failed to send message." });
-      }
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        form.current,
+        EMAILJS_PUBLIC_KEY
+      );
+      setNotification({ type: "success", message: "Message sent successfully! ✅" });
+      form.current.reset();
     } catch (error) {
-      console.error("Contact error:", error);
+      console.error("EmailJS error:", error);
       setNotification({
         type: "error",
         message: "Failed to send. Please try again later.",
@@ -75,16 +72,16 @@ const Contact = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: "Email", value: SITE_DATA.email },
-    { icon: Phone, label: "Phone", value: SITE_DATA.phone },
+    { icon: Mail,   label: "Email",    value: SITE_DATA.email },
+    { icon: Phone,  label: "Phone",    value: SITE_DATA.phone },
     { icon: MapPin, label: "Location", value: SITE_DATA.location },
   ];
 
   const socials = [
-    { icon: FaInstagram, href: SOCIAL_LINKS.instagram, label: "Instagram" },
-    { icon: FaLinkedin, href: SOCIAL_LINKS.linkedin, label: "LinkedIn" },
-    { icon: FaFacebook, href: SOCIAL_LINKS.facebook, label: "Facebook" },
-    { icon: HiOutlineMail, href: SOCIAL_LINKS.email, label: "Email" },
+    { icon: FaInstagram,  href: SOCIAL_LINKS.instagram, label: "Instagram" },
+    { icon: FaLinkedin,   href: SOCIAL_LINKS.linkedin,  label: "LinkedIn"  },
+    { icon: FaFacebook,   href: SOCIAL_LINKS.facebook,  label: "Facebook"  },
+    { icon: HiOutlineMail,href: SOCIAL_LINKS.email,     label: "Email"     },
   ];
 
   const inputClasses = (field) =>

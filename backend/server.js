@@ -4,7 +4,6 @@ import cors from "cors";
 import path from "path";
 import connectDB from "./config/db.js";
 import designRoutes from "./routes/designs.js";
-import contactRoutes from "./routes/contact.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -43,7 +42,6 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // ── API Routes ──
 app.use("/api/designs", designRoutes);
-app.use("/api/contact", contactRoutes);
 
 // ── Health check & Root ──
 app.get("/api/health", (_req, res) => {

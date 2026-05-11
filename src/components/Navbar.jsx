@@ -33,14 +33,21 @@ const Navbar = ({ isMenuOpen, setIsMenuOpen }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Smooth scroll to section — prevents router from intercepting
+  // Smooth scroll to section — closes mobile menu first, waits for animation, then scrolls
   const scrollToSection = useCallback((e, sectionId) => {
     e.preventDefault();
-    const el = document.getElementById(sectionId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    if (isMenuOpen) {
+      // Close the menu first, then scroll after the 350ms close animation
+      setIsMenuOpen(false);
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 380);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    if (isMenuOpen) setIsMenuOpen(false);
   }, [isMenuOpen, setIsMenuOpen]);
 
   // Don't show navbar on admin page

@@ -94,7 +94,7 @@ const Education = () => {
                     📅 {edu.date}
                   </span>
                 </div>
-                <ul className="space-y-2">
+                <ul className="space-y-2 sm:space-y-2.5">
                   {edu.description.map((desc, i) => (
                     <motion.li
                       key={i}
@@ -102,9 +102,9 @@ const Education = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
-                      className="flex items-start gap-2 text-xs text-gray-400 sm:text-sm"
+                      className="flex items-start gap-2.5 text-xs text-gray-400 sm:text-sm"
                     >
-                      <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${edu.iconColor} opacity-70`} />
+                      <span className={`mt-0.5 flex-shrink-0 text-base leading-none font-bold ${edu.iconColor}`}>▸</span>
                       {desc}
                     </motion.li>
                   ))}

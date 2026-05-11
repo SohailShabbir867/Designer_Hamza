@@ -128,7 +128,7 @@ const Experience = () => {
                           <p className="mb-3 text-[10px] text-gray-600 sm:text-xs sm:mb-4">
                             📅 {job.date}
                           </p>
-                          <ul className="space-y-1.5 sm:space-y-2">
+                          <ul className="space-y-2 sm:space-y-2.5">
                             {job.description.map((desc, i) => (
                               <motion.li
                                 key={i}
@@ -136,9 +136,9 @@ const Experience = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.4 + i * 0.06, duration: 0.4 }}
-                                className="flex items-start gap-2 text-xs text-gray-400 sm:text-sm"
+                                className="flex items-start gap-2.5 text-xs text-gray-400 sm:text-sm"
                               >
-                                <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${job.iconColor} opacity-60`} />
+                                <span className={`mt-0.5 flex-shrink-0 text-base leading-none font-bold ${job.iconColor}`}>▸</span>
                                 {desc}
                               </motion.li>
                             ))}

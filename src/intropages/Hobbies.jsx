@@ -125,10 +125,10 @@ const Hobbies = () => {
             <p className={`mb-3 text-[10px] font-semibold sm:text-xs ${item.iconColor} opacity-80`}>
               {item.highlight}
             </p>
-            <ul className="space-y-1.5 sm:space-y-2">
+            <ul className="space-y-2 sm:space-y-2.5">
               {item.description.map((desc, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-gray-400 sm:text-sm">
-                  <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.iconColor} opacity-60`} />
+                <li key={i} className="flex items-start gap-2.5 text-xs text-gray-400 sm:text-sm">
+                  <span className={`mt-0.5 flex-shrink-0 text-base leading-none font-bold ${item.iconColor}`}>▸</span>
                   {desc}
                 </li>
               ))}

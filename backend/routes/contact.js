@@ -4,7 +4,7 @@ import axios from "axios";
 const router = Router();
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
+const BREVO_API_KEY = process.env.hamza_design;
 
 // The email that RECEIVES contact messages (yours — the one you verified on Brevo)
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "shabbirsohail33@gmail.com";
@@ -13,18 +13,22 @@ const SENDER_NAME  = "Designer Hamza Portfolio";
 const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || "shabbirsohail33@gmail.com";
 
 const sendEmail = async ({ to, subject, html, replyTo }) => {
+  if (!BREVO_API_KEY) {
+    throw new Error("Missing BREVO_API_KEY env var");
+  }
+
   await axios.post(
     BREVO_API_URL,
     {
-      sender:  { name: SENDER_NAME, email: SENDER_EMAIL },
-      to:      [{ email: to }],
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email: to }],
       replyTo: replyTo ? { email: replyTo } : undefined,
       subject,
       htmlContent: html,
     },
     {
       headers: {
-        "api-key":     BREVO_API_KEY,
+        "api-key": BREVO_API_KEY,
         "Content-Type": "application/json",
       },
     }

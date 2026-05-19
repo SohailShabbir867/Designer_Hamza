@@ -6,11 +6,11 @@ const router = Router();
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 const BREVO_API_KEY = process.env.hamza_design;
 
-// The email that RECEIVES contact messages (yours — the one you verified on Brevo)
-const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "shabbirsohail33@gmail.com";
+// The email that RECEIVES contact messages (must be verified on Brevo)
+const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "hr59281@gmail.com";
 // The "from" sender name shown in the email
 const SENDER_NAME  = "Designer Hamza Portfolio";
-const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || "shabbirsohail33@gmail.com";
+const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || "hr59281@gmail.com";
 
 const sendEmail = async ({ to, subject, html, replyTo }) => {
   if (!BREVO_API_KEY) {
